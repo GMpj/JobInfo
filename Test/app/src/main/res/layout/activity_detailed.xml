@@ -10,32 +10,30 @@
         android:id="@+id/first"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="2.0">
 
         <TextView
             android:id="@+id/jobname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:textSize="30dip"/>
+            android:textSize="25dip"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/company"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:textSize="20dp"/>
+            android:textSize="18dp"/>
         <TextView
             android:id="@+id/benefits"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:textSize="18dp"/>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:textSize="20dp"/>
+
         </LinearLayout>
 <!--第二组表格布局显示信息-->
 
@@ -43,7 +41,8 @@
         android:id="@+id/second"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0">
 
         <LinearLayout
             android:id="@+id/second_left"
@@ -120,21 +119,24 @@
         android:id="@+id/third"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="4.0">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="职位要求"
             android:id="@+id/decription"
-            android:layout_gravity="left" />
+            android:layout_gravity="left"
+            android:layout_weight="1.0"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="公司简介"
             android:id="@+id/intruction"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right"
+            android:layout_weight="1.0"/>
 
         </LinearLayout>
 

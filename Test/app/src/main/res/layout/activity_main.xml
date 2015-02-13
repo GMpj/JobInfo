@@ -5,17 +5,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" 信息来源：智联招聘"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text=" 默认选择南京地区计算机电子专业无工作经验要求"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textView3" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
     <ListView
         android:id="@+id/lv"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/progressBar">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

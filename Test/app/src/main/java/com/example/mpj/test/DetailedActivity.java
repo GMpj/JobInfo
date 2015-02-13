@@ -37,7 +37,11 @@ public class DetailedActivity extends Activity {
             TextView company= (TextView) findViewById(R.id.company);
             company.setText("公司："+job.getCompany());
             TextView benefits= (TextView) findViewById(R.id.benefits);
-            benefits.setText("福利:"+job.getBenefits());
+            Log.e("fuli",job.getBenefits().length()+"");
+            String str_benefit=job.getBenefits();
+            if(str_benefit.length()==4)
+                str_benefit="无";
+            benefits.setText("福利:"+str_benefit);
 
             TextView pay= (TextView) findViewById(R.id.pay);
             pay.setText("职位月薪:"+job.getPay());

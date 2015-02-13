@@ -30,30 +30,34 @@ public class Utils {
      */
     public void getData(String strURL)  {
         //String strURL="http://www.yingjiesheng.com/major/jisuanji/nanjing/";
+        // 网络链接
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
         try {
-        URL url = new URL(strURL);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            //连接网络并判断是否成功连接
+            URL url = new URL(strURL);
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             if (httpConn.getResponseCode() != 200)
             Log.w("error","net error");
-        InputStream in=httpConn.getInputStream();
 
+            //网页的输入流，设置编码格式
+            InputStream in=httpConn.getInputStream();
             InputStreamReader input = new InputStreamReader(in, "utf-8");
             BufferedReader bufReader = new BufferedReader(input);
             String line = "";
             StringBuilder contentBuf = new StringBuilder();
 
+            //追加文本
             int i=0;
             while ((line = bufReader.readLine()) != null) {
                 contentBuf.append(line);
             }
-                String buf = contentBuf.toString();
-        String regex = "<a\\x20style=\\x22font-weight: bold\\x22.*?/a>";
-        Pattern pt = Pattern.compile(regex);
-        Matcher mt = pt.matcher(buf);
-        while (mt.find()) {
-            // System.out.println(mt.group());
-            //System.out.println();
+
+            String buf = contentBuf.toString();
+            String regex = "<a\\x20style=\\x22font-weight: bold\\x22.*?/a>";
+            //获取超链接语句
+            Pattern pt = Pattern.compile(regex);
+            Matcher mt = pt.matcher(buf);
+            while (mt.find()) {
             String s2 = ">.+</a>";//标题部分
             String s3 = "href=\\x22[^\\x22]*[^\\x22]*\\x22";
 
@@ -62,7 +66,7 @@ public class Utils {
             while (mt2.find()) {
                 String str1 = mt2.group().replaceAll(">|</a>", "");
                 title.add(str1);
-                Log.w("content",title.get(i));
+//                Log.w("content",title.get(i));
 
             }
 
@@ -148,6 +152,10 @@ public class Utils {
             contentBuf.append(line);
         }
         String buf = contentBuf.toString();
+//        buf=buf.replaceAll("<BR>","\n");
+//        buf=buf.replaceAll("<br>","\n");
+//        buf=buf.replaceAll("<br/>","\n");
+       // Log.e("",buf);
         String regex="<!--20140610liuhuili-->.*?<!--相似职位推荐-->";
         Pattern pt=Pattern.compile(regex);
         Matcher mt=pt.matcher(buf);
@@ -163,8 +171,8 @@ public class Utils {
              minedu=getInformation(minedu_1, minedu_2,mt);
              numpeople=getInformation(numpeople_1, numpeople_2,mt);
              jobkind=getInformation(jobkind_1, jobkind_2,mt);
-             decription=getInformation(description_1, description_2,mt);
-             introduction=getInformation(introduction_1, introduction_2,mt);
+             decription=getStyleInformation(description_1, description_2, mt);
+             introduction=getStyleInformation(introduction_1, introduction_2, mt);
             JobInfo job=new JobInfo();
             job.setAddress(address);
             job.setBenefits(benefits);
@@ -210,6 +218,23 @@ public class Utils {
         //str1=str1.replaceAll("\\s*?", " ");
         return str1;
     }
+
+    public String getStyleInformation(String str1,String str2,Matcher mt)throws IOException{
+
+
+            Pattern pt1 = Pattern.compile(str1);
+            Matcher mt1 = pt1.matcher(mt.group());
+
+        //Log.e("",mt.group().replaceAll("<BR>|<br>|<br/>","\n"));
+         //  mt1.group().replaceAll("<BR>|<br>|<br/>","\n");
+            while (mt1.find()) {
+                str1 = mt1.group().replaceAll("<BR>|<br>|<br/>|</p>","\n");
+                str1=str1.replaceAll(str2,"");
+                break;
+            }
+            //str1=str1.replaceAll("\\s*?", " ");
+            return str1;
+        }
 
     public List<String> getNet() {
         return net;

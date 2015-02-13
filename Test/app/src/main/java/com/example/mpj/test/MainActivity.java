@@ -8,14 +8,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Intent;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import static android.content.Context.CONTEXT_RESTRICTED;
 
 
 public class MainActivity extends Activity {
@@ -24,50 +29,96 @@ public class MainActivity extends Activity {
     public List<String> title = new ArrayList<String>();
     public List<String> net = new ArrayList<String>();
     private ListView listView;
+    private TextView textView;
+    private LinearLayout progressBar;
+    private String url;
+    private Utils util = new Utils();
+    Adapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        final Utils util = new Utils();
-        try {
-            util.getData("http://sou.zhaopin.com/jobs/searchresult.ashx?bj=160000&in=210500%3B160400&jl=%E5%8D%97%E4%BA%AC&sm=0&el=4&isfilter=1&p=1&we=0000");
-        } catch (Exception E) {
-
-            Log.e("error", "nullpoint");
-        }
         listView = (ListView) findViewById(R.id.lv);
+        textView= (TextView) findViewById(R.id.textView3);
+        progressBar= (LinearLayout) findViewById(R.id.progressBar);
+
+        progressBar.setVisibility(View.INVISIBLE);
+        url=this.getIntent().getExtras().getString("URL");
+//        fillDate();
+        try {
+                            util.getData(url);
+
+                        } catch (Exception E) {
+
+                            Log.e("error", "nullpoint");
+                        }
+        if(util.getTitle().size()==0){
+                            textView.setText("暂无数据");
+                        }
+        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.listview_style, util.getTitle()));
 
 
         Log.e("长度", util.getTitle().size() + "");
-        //Log.w("ccccc",title.get(0));
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, util.getTitle()));
+
+            listView.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                        long arg3) {
+                    // TODO Auto-generated method stub
 
 
-        listView.setOnItemClickListener(new OnItemClickListener(){
+                    Intent intent = new Intent();
 
-            @Override
-            public void onItemClick(AdapterView <?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                // TODO Auto-generated method stub
+                    intent.putExtra("net", util.getNet().get(arg2));
 
+                    intent.setClass(MainActivity.this, DetailedActivity.class);
 
-                Intent intent=new Intent();
-
-                intent.putExtra("net", util.getNet().get(arg2));
-
-                intent.setClass(MainActivity.this, DetailedActivity.class);
-
-                startActivity(intent);
+                    startActivity(intent);
 
 
-            }
+                }
 
-        });
+            });
+
     }
-
+//    private void fillDate() {
+//       // ll_loading.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+//        new Thread(){
+//            public void run(){
+//
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //progressBar.setVisibility(View.VISIBLE);
+//
+//                        try {
+//
+//                            util.getData(url);
+//
+//                        } catch (Exception E) {
+//
+//                            Log.e("error", "nullpoint");
+//                        }
+//                try {
+//                    sleep(10000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                        progressBar.setVisibility(View.INVISIBLE);
+//                        if(util.getTitle().size()==0){
+//                            textView.setText("暂无数据");
+//                        }
+//
+//                    }
+//                });
+//            }
+//        }.start();
+//
+//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
