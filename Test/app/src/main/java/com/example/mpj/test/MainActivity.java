@@ -4,6 +4,7 @@ package com.example.mpj.test;
 import android.app.Activity;
 //import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+
 import android.content.Intent;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
@@ -44,9 +47,12 @@ public class MainActivity extends Activity {
         textView= (TextView) findViewById(R.id.textView3);
         progressBar= (LinearLayout) findViewById(R.id.progressBar);
 
-        progressBar.setVisibility(View.INVISIBLE);
+
         url=this.getIntent().getExtras().getString("URL");
-//        fillDate();
+       //fillDate();
+
+
+        progressBar.setVisibility(View.INVISIBLE);
         try {
                             util.getData(url);
 
@@ -84,6 +90,10 @@ public class MainActivity extends Activity {
             });
 
     }
+
+
+
+
 //    private void fillDate() {
 //       // ll_loading.setVisibility(View.VISIBLE);
 //        progressBar.setVisibility(View.VISIBLE);
@@ -112,7 +122,7 @@ public class MainActivity extends Activity {
 //                        if(util.getTitle().size()==0){
 //                            textView.setText("暂无数据");
 //                        }
-//
+//                        listView.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.listview_style, util.getTitle()));
 //                    }
 //                });
 //            }

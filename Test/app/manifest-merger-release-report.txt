@@ -33,34 +33,40 @@ ADDED from AndroidManifest.xml:12:9
 		ADDED from AndroidManifest.xml:14:13
 	android:name
 		ADDED from AndroidManifest.xml:13:13
-intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:15:13
-action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:16:17
-	android:name
-		ADDED from AndroidManifest.xml:16:25
-category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:18:17
-	android:name
-		ADDED from AndroidManifest.xml:18:27
 activity#com.example.mpj.test.DetailedActivity
+ADDED from AndroidManifest.xml:17:9
+	android:label
+		ADDED from AndroidManifest.xml:19:13
+	android:name
+		ADDED from AndroidManifest.xml:18:13
+activity#com.example.mpj.test.Decription
 ADDED from AndroidManifest.xml:21:9
 	android:label
 		ADDED from AndroidManifest.xml:23:13
 	android:name
 		ADDED from AndroidManifest.xml:22:13
-activity#com.example.mpj.test.Decription
+activity#com.example.mpj.test.Introduction
 ADDED from AndroidManifest.xml:25:9
 	android:label
 		ADDED from AndroidManifest.xml:27:13
 	android:name
 		ADDED from AndroidManifest.xml:26:13
-activity#com.example.mpj.test.Introduction
+activity#com.example.mpj.test.ChoiceActivity
 ADDED from AndroidManifest.xml:29:9
 	android:label
 		ADDED from AndroidManifest.xml:31:13
 	android:name
 		ADDED from AndroidManifest.xml:30:13
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:32:13
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:33:17
+	android:name
+		ADDED from AndroidManifest.xml:33:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:35:17
+	android:name
+		ADDED from AndroidManifest.xml:35:27
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 	android:targetSdkVersion
