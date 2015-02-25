@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Utils {
      */
     public void getData(String strURL)  {
         //String strURL="http://www.yingjiesheng.com/major/jisuanji/nanjing/";
-        // 网络链接
+        // 设置网络链接，虽然不知道干嘛的，但是必须有
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
         try {
             //连接网络并判断是否成功连接
@@ -59,37 +60,30 @@ public class Utils {
             Matcher mt = pt.matcher(buf);
             while (mt.find()) {
             String s2 = ">.+</a>";//标题部分
-            String s3 = "href=\\x22[^\\x22]*[^\\x22]*\\x22";
+            String s3 = "href=\\x22[^\\x22]*[^\\x22]*\\x22";//连接部分
 
             Pattern pt2 = Pattern.compile(s2);
             Matcher mt2 = pt2.matcher(mt.group());
             while (mt2.find()) {
+                //获取标题
                 String str1 = mt2.group().replaceAll(">|</a>", "");
                 title.add(str1);
-//                Log.w("content",title.get(i));
 
             }
 
             Pattern pt3 = Pattern.compile(s3);
             Matcher mt3 = pt3.matcher(mt.group());
             while (mt3.find()) {
+                //获取超连接
                 String str2 = mt3.group().replaceAll("href=\\x22", "");
                 str2 = str2.replaceAll("\\x22", "");
                 net.add(str2);
-                Log.w("content",net.get(i));
-                i++;
-            }
-        }
 
-            Log.e("length",title.size()+"");
-            MainActivity main=new MainActivity();
-            //main.setTitle(title);
-           // main.setNet(net);
-            main.title=title;
-            main.net=net;
+            }
+         }
         }
         catch(Exception e){
-            Log.e("error","zhe?");
+            Log.e("error","Error");
         }
     }
 
@@ -99,9 +93,10 @@ public class Utils {
      * @return
      * @throws Exception
      */
-    public JobInfo getDetailed (String strURL) throws Exception {
+    public JobInfo getDetailed (String strURL)  {
 
-        String title_1="<h1>.*?</h1>";//标题部分
+
+        String title_1="<h1>.*?</h1>";
         String title_2="<h1>|</h1>";
         String company_1="<h2><a.*?</a></h2>";
         String company_2="<.*?>";
@@ -141,27 +136,40 @@ public class Utils {
          String decription;
          String introduction;
 
-        URL url = new URL(strURL);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        InputStreamReader input = new InputStreamReader(httpConn
-                .getInputStream(), "utf-8");
-        BufferedReader bufReader = new BufferedReader(input);
+
+
+        try {
+            URL url = new URL(strURL);
+            Log.e("",strURL);
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+
+            if (httpConn.getResponseCode() != 200)
+                Log.w("error","net error");
+
+            //网页的输入流，设置编码格式
+            InputStream in=httpConn.getInputStream();
+            InputStreamReader input = new InputStreamReader(in, "utf-8");
+            BufferedReader bufReader = new BufferedReader(input);
         String line = "";
         StringBuilder contentBuf = new StringBuilder();
+
         while ((line = bufReader.readLine()) != null) {
             contentBuf.append(line);
         }
+
         String buf = contentBuf.toString();
-//        buf=buf.replaceAll("<BR>","\n");
-//        buf=buf.replaceAll("<br>","\n");
-//        buf=buf.replaceAll("<br/>","\n");
-       // Log.e("",buf);
+
+        Log.e("",buf);
+        //截取部分，减少处理文字量
         String regex="<!--20140610liuhuili-->.*?<!--相似职位推荐-->";
         Pattern pt=Pattern.compile(regex);
         Matcher mt=pt.matcher(buf);
         while(mt.find()) {
-             title=getInformation(title_1,title_2,mt);
-             company=getInformation(company_1,company_2,mt);
+
+            //修改为自己需要的信息
+            title=getInformation(title_1,title_2,mt);
+            company=getInformation(company_1,company_2,mt);
              benefits=getInformation(benefits_1,bendfits_2,mt);
              pay=getInformation(pay_1, pay_2,mt);
              address=getInformation(address_1, address_2,mt);
@@ -171,8 +179,11 @@ public class Utils {
              minedu=getInformation(minedu_1, minedu_2,mt);
              numpeople=getInformation(numpeople_1, numpeople_2,mt);
              jobkind=getInformation(jobkind_1, jobkind_2,mt);
+            //处理信息过程中增加格式
              decription=getStyleInformation(description_1, description_2, mt);
              introduction=getStyleInformation(introduction_1, introduction_2, mt);
+
+            //创建jobinfo对象，并且把刚刚获取的额值放进去
             JobInfo job=new JobInfo();
             job.setAddress(address);
             job.setBenefits(benefits);
@@ -188,14 +199,18 @@ public class Utils {
             job.setPay(pay);
             job.setTitle(title);
             return job;
-        }
 
+        }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
 
         return null;
     }
 
     /**
-     * 将信息修改得到自己需要的信息
+     * 将信息修改得到自己需要的信息，没有添加自己的格式
      * @param str1 曾则表达式获取相关信息
      * @param str2 正则表达式将多余的信息删除
      * @param mt
@@ -219,20 +234,26 @@ public class Utils {
         return str1;
     }
 
+    /**
+     * 处理信息并且增加自己的格式
+     * @param str1 曾则表达式获取相关信息
+     * @param str2 正则表达式将多余的信息删除
+     * @param mt
+     * 将网页上面的换行符替换为可用的换行符
+     * @return
+     * @throws IOException
+     */
     public String getStyleInformation(String str1,String str2,Matcher mt)throws IOException{
 
 
             Pattern pt1 = Pattern.compile(str1);
             Matcher mt1 = pt1.matcher(mt.group());
 
-        //Log.e("",mt.group().replaceAll("<BR>|<br>|<br/>","\n"));
-         //  mt1.group().replaceAll("<BR>|<br>|<br/>","\n");
             while (mt1.find()) {
                 str1 = mt1.group().replaceAll("<BR>|<br>|<br/>|</p>","\n");
                 str1=str1.replaceAll(str2,"");
                 break;
             }
-            //str1=str1.replaceAll("\\s*?", " ");
             return str1;
         }
 

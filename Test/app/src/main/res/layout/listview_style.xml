@@ -8,4 +8,5 @@
     android:textAppearance="?android:attr/textAppearanceListItem"
     android:gravity="center"
     android:textSize="18dp"
+    android:textColor="#000000"
     />

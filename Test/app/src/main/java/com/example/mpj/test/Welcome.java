@@ -1,34 +1,42 @@
 package com.example.mpj.test;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 
-public class Decription extends Activity {
+
+public class Welcome extends Activity implements Runnable {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_decription);
+        setContentView(R.layout.activity_welcome);
 
-        TextView decription= (TextView) findViewById(R.id.decription);
-        String str=this.getIntent().getExtras().getString("decription");
 
-        //将空格替换掉，美化文字显示
-        str=str.replaceAll(" ","");
-        //将文字显示出来
-        decription.setText(str);
+        new Thread(this).start();
     }
+    public void run() {
 
+            //延迟1秒
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+                Intent intent1 = new Intent();
+                intent1.setClass(Welcome.this,ChoiceActivity.class);
+                startActivity(intent1);
+                finish();
+
+    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_decription, menu);
+//        getMenuInflater().inflate(R.menu.menu_welcome, menu);
 //        return true;
 //    }
 //

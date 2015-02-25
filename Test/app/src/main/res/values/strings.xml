@@ -8,5 +8,6 @@
     <string name="title_activity_decription">职位介绍</string>
     <string name="title_activity_introduction">" 公司介绍"</string>
     <string name="title_activity_choice">JobInfo</string>
+    <string name="title_activity_welcome">Welcome</string>
 
 </resources>

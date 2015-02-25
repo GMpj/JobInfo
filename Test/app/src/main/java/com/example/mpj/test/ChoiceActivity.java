@@ -1,6 +1,9 @@
 package com.example.mpj.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +21,10 @@ import java.util.Set;
 
 public class ChoiceActivity extends Activity {
 
-
+        /*
+         产生选择数据，通过选择种类和城市生成地址
+         可维护性低，考虑修改为其他形式
+         */
         private static final String[] kind={"互联网/电子商务","计算机软件","IT服务(系统/数据/维护)","通信/电信/网络设备",
                 "通信/电信运营、增值服务","电子技术/半导体/集成电路","银行","房地产/建筑/建材/工程","专业服务/咨询(财会/法律/人力资源等)"
                 ,"广告/会展/公关","外包服务","贸易/进出口","教育/培训/院校","汽车/摩托车","大型设备/机电设备/重工业","医药/生物工程","交通/运输"
@@ -59,7 +65,7 @@ public class ChoiceActivity extends Activity {
         spinner1.setAdapter(adapter);
         //添加事件Spinner事件监听
         spinner1.setOnItemSelectedListener(new Spinner1SelectedListener());
-        //设置默认值
+        //设置spinner是否可见
         spinner1.setVisibility(View.VISIBLE);
 
         spinner2 = (Spinner) findViewById(R.id.spinner2);
@@ -71,22 +77,23 @@ public class ChoiceActivity extends Activity {
         spinner2.setAdapter(adapter);
         //添加事件Spinner事件监听
         spinner2.setOnItemSelectedListener(new Spinner2SelectedListener());
-        //设置默认值
+        //设置spinner是否可见，默认为可见
         //spinner2.setVisibility(View.VISIBLE);
 
         button= (Button) findViewById(R.id.button);
+        //绑定按钮的事件监听
         button.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View v){
 
                 Intent intent=new Intent();
 
+                //拼接url
                 URL="http://sou.zhaopin.com/jobs/searchresult.ashx?"+JOB+"&jl="+CITY+"&isadv=0&el=4&isfilter=1&p=1&we=0000";
-                Log.e("ERROR",URL);
+
+                //将拼接成的网址传入下一个activity
                 intent.putExtra("URL", URL);
-
                 intent.setClass(ChoiceActivity.this, MainActivity.class);
-
                 startActivity(intent);
 
             }
@@ -102,6 +109,7 @@ public class ChoiceActivity extends Activity {
         public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
                                    long arg3) {
 
+            //根据获取的按钮次序获得对应的url地址
             JOB=url1[arg2];
 
 
@@ -116,7 +124,7 @@ public class ChoiceActivity extends Activity {
         public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
                                    long arg3) {
 
-
+            //根据获取的按钮次序获得对应的url地址
             CITY=url2[arg2];
 
         }
@@ -127,6 +135,30 @@ public class ChoiceActivity extends Activity {
 
     }
 
+    /**
+     * 重写返回键
+     */
+    public void onBackPressed() {
+        //设置对话框
+        Dialog dialog = new AlertDialog.Builder(this)
+                .setTitle("信息提示")
+                .setMessage("确定要退出系统吗?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    //设置选择产生的效果
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .create();
+        dialog.show();
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.

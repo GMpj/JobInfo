@@ -14,6 +14,7 @@ public class Introduction extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
 
+        //获取chandi过来的参数，并进行显示
         TextView intruction= (TextView) findViewById(R.id.intruction);
         intruction.setText(this.getIntent().getExtras().getString("intruction"));
     }

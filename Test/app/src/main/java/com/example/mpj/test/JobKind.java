@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Created by mpj on 15-2-13.
+ * 尝试将维护性的两列数组替换成map
  */
 public class JobKind {
     private Map<String,String> kind=new HashMap<String, String>();

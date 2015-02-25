@@ -19,25 +19,20 @@ public class DetailedActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
 
+        //获取上个activity传递的参数
         String net = this.getIntent().getExtras().getString("net");
 
-        Log.e("net", net);
         final Utils util=new Utils();
         try {
-            final JobInfo job=util.getDetailed(net);
-//            TextView textView= (TextView) findViewById(R.id.textView);
-//
-//            textView.setText("职位:"+job.getTitle()+"公司："+job.getCompany()+"福利:"+job.getBenefits()+"职位月薪:"+job.getPay()+
-//            "工作地点："+job.getAddress()+"发布时间："+job.getData()+"工作性质:"+job.getNature()+"工作经验:"+job.getExperience()+
-//            "最低学历:"+job.getMinedu()+"招聘人数:"+job.getNumpeople()+"职位类别:"+job.getJobkind()+"职位描述："+job.getDecription()+
-//             "公司简介："+job.getIntroduction());
-            //textView.setMovementMethod(new ScrollingMovementMethod());
+            //根据url查询处理信息
+             JobInfo job=util.getDetailed(net);
+
+            //获取textview并将显示信息绑定
             TextView jobname= (TextView) findViewById(R.id.jobname);
             jobname.setText("职位:"+job.getTitle());
             TextView company= (TextView) findViewById(R.id.company);
             company.setText("公司："+job.getCompany());
             TextView benefits= (TextView) findViewById(R.id.benefits);
-            Log.e("fuli",job.getBenefits().length()+"");
             String str_benefit=job.getBenefits();
             if(str_benefit.length()==4)
                 str_benefit="无";
@@ -61,6 +56,7 @@ public class DetailedActivity extends Activity {
             jobkind.setText("职位类别:"+job.getJobkind());
 
 
+            //获取职位描述和公司简介，作为参数传递给后面的界面
             final String str1=job.getDecription();
             final String str2=job.getIntroduction();
 
@@ -73,11 +69,8 @@ public class DetailedActivity extends Activity {
                 public void onClick(View v){
 
                     Intent intent=new Intent();
-
                     intent.putExtra("decription", str1);
-
                     intent.setClass(DetailedActivity.this, Decription.class);
-
                     startActivity(intent);
 
                 }
@@ -87,12 +80,10 @@ public class DetailedActivity extends Activity {
             intruction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Intent intent=new Intent();
-
                     intent.putExtra("intruction", str2);
-
                     intent.setClass(DetailedActivity.this, Introduction.class);
-
                     startActivity(intent);
                 }
             });
